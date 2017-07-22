@@ -1,0 +1,7 @@
+node_modules
+dist/**.*.css
+dist/**/*.js
+dist/**.*.css
+dist/**/*.html
+dist/**/*.gz
+dist/**/*.map
