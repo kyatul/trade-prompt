@@ -29,5 +29,22 @@ export default class PivotPointCalculator{
     this.pivots['PP'] = PP;
     this.pivots['R1'] = (2*PP - this.candle.low);
     this.pivots['S1'] = (2*PP - this.candle.high);
+    this.pivots['R2'] = PP + (this.pivots.R1 - this.pivots.S1);
+    this.pivots['S2'] = PP - (this.pivots.R1 - this.pivots.S1);
+  }
+
+  getPivotSlab(price){
+    if(!this.candle) return '';
+    if(price >= this.pivots.R2){
+      return 'above R2';
+    }else if(price < this.pivots.R2 && price >= this.price.R1){
+      return 'in R2-R1';
+    }else if(price < this.pivots.R1 && price >= this.price.PP){
+      return 'in R1-PP';
+    }else if(price < this.pivots.PP && price >= this.price.S1){
+      return 'in PP-S1';
+    }else if(price < this.pivots.S1 && price >= this.price.S2){
+      return 'in S1-S2';
+    }
   }
 }

@@ -2,6 +2,7 @@ import HttpService from '../services/http_service';
 import Utility from '../services/utility';
 import PivotPointCalculator from '../services/pivot_point_calculator';
 import CandleUtility from '../services/candle_utility';
+import Candle from '../services/candle';
 
 export default class Crawler {
   constructor(instrument, instrumentToken, interval, volumeThreshold, longCandleLength, callback){
@@ -16,11 +17,12 @@ export default class Crawler {
     this.candles = [];
     this.pivots = null;
     this.messages = [];
+    this.calculator = new PivotPointCalculator(this.instrumentToken);
+    this.pivotSlab = '';
   }
 
   start(){
-    let calculator = new PivotPointCalculator(this.instrumentToken);
-    calculator.calculate().then((pivots) => {
+    this.calculator.calculate().then((pivots) => {
       this.pivots = pivots;  
       setInterval(() => { if(this.doCrawl) this.crawl() }, this.interval * 60 * 1000); 
     }) 
@@ -29,8 +31,10 @@ export default class Crawler {
   crawl(){
     this.clearStaleData();
     this.fetchData();
-    if(!this._getLastCandle()) return;
+    if(!this._latestCandle()) return;
     this.generateVolumeMessages();
+    this.generateCandleMessages();
+    this.generatePivotMessages();
     if(!this.messages.length) this.callback(this.messages);
   }
 
@@ -52,7 +56,7 @@ export default class Crawler {
   }
 
   generateVolumeMessages(){
-    let latestVolume = this._getLastCandle()[5];
+    let latestVolume = this._latestCandle()[5];
     if(latestVolume >= this.volumeThreshold){
       this.isVolumeBreached = true;
       this.messages.push(...[`${this.instrument} breaches volume threshold with ${latestVolume}`]);
@@ -60,14 +64,22 @@ export default class Crawler {
   }
 
   generateCandleMessages(){
-    let candleUtility = new CandleUtility(this._getLastCandle());
+    let candleUtility = new CandleUtility(this._latestCandle());
     if(candleUtility.isLongCandle(this.longCandleLength) && this.isVolumeBreached){
       this.messages.push(...[`${this.instrument} long candle formed`]);
     }
   }
 
-  _getLastCandle(){
+  generatePivotMessages(){
+    let latestPivotSlab = calculator.getPivotSlab(this._latestCandle().close);
+    if(latestPivotSlab != this.pivotSlab){
+      this.pivotSlab = latestPivotSlab;
+      this.messages.push(...[`${this.instrument} closed in pivot slab ${this.pivotSlab}`]);
+    }
+  }
+
+  _latestCandle(){
     if(!this.candles.length) return null;
-    return this.candles[this.candles.length - 1];
+    return new Candle(this.candles[this.candles.length - 1]);
   }
 }
