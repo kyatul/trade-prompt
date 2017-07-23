@@ -18,7 +18,7 @@ export default class PivotPoints extends React.Component {
 
   render(){
     return(
-      <div>
+      <span>
         <h3>Pivot Points</h3>
         <h4>{this.props.instrument}</h4>
         <h4>R2 {this.state.R2}</h4>
@@ -26,7 +26,7 @@ export default class PivotPoints extends React.Component {
         <h4>PP {this.state.PP}</h4>
         <h4>S1{this.state.S1}</h4>
         <h4>S2 {this.state.S2}</h4>
-      </div>
+      </span>
     );
   }
 }

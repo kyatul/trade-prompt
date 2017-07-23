@@ -6,17 +6,23 @@ export default class Board extends React.Component {
     return(
       <div style={{textAlign: 'center'}}>
         <Topic
-          instrument="SILVERMIC"
-          instrumentToken="53397511"
-          interval="15"
-          volumeThreshold="5000"
+          instrument="SILVER"
+          instrumentToken="53359111"
+          interval="5"
+          volumeThreshold="2800"
           longCandleLength=""/>
         <Topic
-          instrument="CRUDEOILM"
-          instrumentToken="53430023"
+          instrument="CRUDEOIL"
+          instrumentToken="53429767"
           interval="5"
           volumeThreshold="500"
           longCandleLength="40"/>
+        <Topic
+          instrument="NATURALGAS"
+          instrumentToken="53473031"
+          interval="5"
+          volumeThreshold="30"
+          longCandleLength="0.5"/>
       </div>
     );
   }

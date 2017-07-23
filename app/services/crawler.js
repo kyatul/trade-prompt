@@ -35,7 +35,7 @@ export default class Crawler {
     this.generateVolumeMessages();
     this.generateCandleMessages();
     this.generatePivotMessages();
-    if(!this.messages.length) this.callback(this.messages);
+    this.sendMessages();
   }
 
   clearStaleData(){
@@ -75,6 +75,13 @@ export default class Crawler {
     if(latestPivotSlab != this.pivotSlab){
       this.pivotSlab = latestPivotSlab;
       this.messages.push(...[`${this.instrument} closed in pivot slab ${this.pivotSlab}`]);
+    }
+  }
+
+  sendMessages(){
+    if(!this.messages.length){
+      this.messages.push(...[`----- ${this._latestCandle().timeStamp} ------`]); 
+      this.callback(this.messages);
     }
   }
 

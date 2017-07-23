@@ -1,5 +1,6 @@
 export default class Candle{
-  constructor(data){
+  constructor(candle){
+    this.timeStamp = candle[0];
     this.open = candle[1];
     this.high = candle[2];
     this.low = candle[3];
