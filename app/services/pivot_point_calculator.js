@@ -1,10 +1,11 @@
 import HttpService from '../services/http_service';
 import Utility from '../services/utility';
+import Candle from '../services/candle';
 
 export default class PivotPointCalculator{
   constructor(instrumentToken) {
     this.instrumentToken = instrumentToken;
-    this.ohlc = null;
+    this.candle = null;
     this.pivots = {}
     this.saveData = this.saveData.bind(this);	
     this.lastWorkingDay = (new Date('2017-07-21')).toISOString().substring(0, 10);
@@ -23,10 +24,10 @@ export default class PivotPointCalculator{
   }
 
   saveData(candle){
-    this.ohlc = { open: candle[1], high: candle[2], low: candle[3], close: candle[4] }
-    let PP = Math.round((this.ohlc.high + this.ohlc.low + this.ohlc.close)/3);
+    this.candle = new Candle(candle);
+    let PP = Math.round((this.candle.high + this.candle.low + this.candle.close)/3);
     this.pivots['PP'] = PP;
-    this.pivots['R1'] = (2*PP - this.ohlc.low);
-    this.pivots['S1'] = (2*PP - this.ohlc.high);
+    this.pivots['R1'] = (2*PP - this.candle.low);
+    this.pivots['S1'] = (2*PP - this.candle.high);
   }
 }

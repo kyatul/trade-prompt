@@ -9,12 +9,14 @@ export default class Board extends React.Component {
           instrument="SILVERMIC"
           instrumentToken="53397511"
           interval="15"
-          volumeThreshold="5000"/>
+          volumeThreshold="5000"
+          longCandleLength=""/>
         <Topic
           instrument="CRUDEOILM"
           instrumentToken="53430023"
           interval="5"
-          volumeThreshold="5000"/>
+          volumeThreshold="5000"
+          longCandleLength="6"/>
       </div>
     );
   }

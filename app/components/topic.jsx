@@ -12,13 +12,13 @@ export default class Topic extends React.Component {
   }
 
   componentDidMount(){
-    let crawler = new Crawler(this.props.instrument, this.props.instrumentToken, this.props.interval, this.props.volumeThreshold, this.addMessage);
+    let crawler = new Crawler(this.props.instrument, this.props.instrumentToken, this.props.interval, this.props.volumeThreshold, this.props.longCandleLength, this.addMessage);
     crawler.start();
   }
 
   addMessage(msg){
     this.setState({ messages: this.state.messages.concat(msg) })
-    if(msg.length > 0) Notifier.focus("Trade Propmt",msg);
+    Notifier.focus("Trade Propmt",msg);
   }
 
   render(){
