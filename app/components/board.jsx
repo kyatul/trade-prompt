@@ -15,8 +15,8 @@ export default class Board extends React.Component {
           instrument="CRUDEOILM"
           instrumentToken="53430023"
           interval="5"
-          volumeThreshold="5000"
-          longCandleLength="6"/>
+          volumeThreshold="500"
+          longCandleLength="40"/>
       </div>
     );
   }

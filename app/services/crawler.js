@@ -12,6 +12,7 @@ export default class Crawler {
     this.longCandleLength = longCandleLength;
     this.callback = callback;
     this.doCrawl = true;
+    this.isVolumeBreached = false;
     this.candles = [];
     this.pivots = null;
     this.messages = [];
@@ -35,6 +36,7 @@ export default class Crawler {
 
   clearStaleData(){
     this.messages = [];
+    this.isVolumeBreached = false;
   }
 
   fetchData(){
@@ -52,13 +54,14 @@ export default class Crawler {
   generateVolumeMessages(){
     let latestVolume = this._getLastCandle()[5];
     if(latestVolume >= this.volumeThreshold){
+      this.isVolumeBreached = true;
       this.messages.push(...[`${this.instrument} breaches volume threshold with ${latestVolume}`]);
     }
   }
 
   generateCandleMessages(){
     let candleUtility = new CandleUtility(this._getLastCandle());
-    if(candleUtility.isLongCandle(this.longCandleLength)){
+    if(candleUtility.isLongCandle(this.longCandleLength) && this.isVolumeBreached){
       this.messages.push(...[`${this.instrument} long candle formed`]);
     }
   }
