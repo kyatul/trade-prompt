@@ -24,18 +24,19 @@ export default class Crawler {
   start(){
     this.calculator.calculate().then((pivots) => {
       this.pivots = pivots;  
-      setInterval(() => { if(this.doCrawl) this.crawl() }, this.interval * 60 * 1000); 
+      setInterval(() => { if(this.doCrawl) this.crawl() }, this.interval * 60 * 100); 
     }) 
   }
 
   crawl(){
     this.clearStaleData();
-    this.fetchData();
-    if(!this._latestCandle()) return;
-    this.generateVolumeMessages();
-    this.generateCandleMessages();
-    this.generatePivotMessages();
-    this.sendMessages();
+    this.fetchData().then(() => {
+      if(!this._latestCandle()) return;
+      this.generateVolumeMessages();
+      this.generateCandleMessages();
+      this.generatePivotMessages();
+      this.sendMessages();
+    });
   }
 
   clearStaleData(){
@@ -44,19 +45,22 @@ export default class Crawler {
   }
 
   fetchData(){
-    let api = Utility.getPublicApi(this.instrumentToken, `${this.interval}minute`, Utility.today(), Utility.today());
-    HttpService.get(api, (response) => {
-      if(response.status == 'success'){
-        this.candles = response.data.candles;
-      }else{
-         this.doCrawl = false;
-         this.callback(response.message);
-      }
+    return new Promise((resolve, reject) => {
+      HttpService.get(Utility.getPublicApi(this.instrumentToken, `${this.interval}minute`, Utility.today(), Utility.today()), 
+        (response) => {
+          if(response.status == 'success'){
+            this.candles = response.data.candles;
+            resolve();
+          }else{
+             this.doCrawl = false;
+             this.callback(response.message);
+          }
+        })
     })
   }
 
   generateVolumeMessages(){
-    let latestVolume = this._latestCandle()[5];
+    let latestVolume = this._latestCandle().volume;
     if(latestVolume >= this.volumeThreshold){
       this.isVolumeBreached = true;
       this.messages.push(...[`${this.instrument} breaches volume threshold with ${latestVolume}`]);
@@ -71,7 +75,7 @@ export default class Crawler {
   }
 
   generatePivotMessages(){
-    let latestPivotSlab = calculator.getPivotSlab(this._latestCandle().close);
+    let latestPivotSlab = this.calculator.getPivotSlab(this._latestCandle().close);
     if(latestPivotSlab != this.pivotSlab){
       this.pivotSlab = latestPivotSlab;
       this.messages.push(...[`${this.instrument} closed in pivot slab ${this.pivotSlab}`]);
@@ -79,7 +83,7 @@ export default class Crawler {
   }
 
   sendMessages(){
-    if(!this.messages.length){
+    if(!!this.messages.length){
       this.messages.push(...[`----- ${this._latestCandle().timeStamp} ------`]); 
       this.callback(this.messages);
     }

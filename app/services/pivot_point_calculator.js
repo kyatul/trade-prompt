@@ -37,13 +37,13 @@ export default class PivotPointCalculator{
     if(!this.candle) return '';
     if(price >= this.pivots.R2){
       return 'above R2';
-    }else if(price < this.pivots.R2 && price >= this.price.R1){
+    }else if(price < this.pivots.R2 && price >= this.pivots.R1){
       return 'in R2-R1';
-    }else if(price < this.pivots.R1 && price >= this.price.PP){
+    }else if(price < this.pivots.R1 && price >= this.pivots.PP){
       return 'in R1-PP';
-    }else if(price < this.pivots.PP && price >= this.price.S1){
+    }else if(price < this.pivots.PP && price >= this.pivots.S1){
       return 'in PP-S1';
-    }else if(price < this.pivots.S1 && price >= this.price.S2){
+    }else if(price < this.pivots.S1 && price >= this.pivots.S2){
       return 'in S1-S2';
     }
   }
