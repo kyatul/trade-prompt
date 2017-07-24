@@ -8,7 +8,7 @@ export default class PivotPointCalculator{
     this.candle = null;
     this.pivots = {}
     this.saveData = this.saveData.bind(this);	
-    this.lastWorkingDay = (new Date('2017-07-21')).toISOString().substring(0, 10);
+    this.lastWorkingDay = Utility.lastWorkingDay();
   }
 
   calculate(){

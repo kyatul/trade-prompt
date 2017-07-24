@@ -65,7 +65,7 @@ export default class Crawler {
 
   generateCandleMessages(){
     let candleUtility = new CandleUtility(this._latestCandle());
-    if(candleUtility.isLongCandle(this.longCandleLength) && this.isVolumeBreached){
+    if(candleUtility.isLongCandle(this.longCandleLength)){
       this.messages.push(...[`${this.instrument} long candle formed`]);
     }
   }
