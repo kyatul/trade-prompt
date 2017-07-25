@@ -7,12 +7,16 @@ export default class App extends React.Component {
     return (
      <div style={{textAlign: 'center'}}>
        <div>
-         <PivotPoints
-            instrument="SILVERMIC"
-            instrumentToken="53397511"/>
-          <PivotPoints
-            instrument="CRUDEOILM"
-            instrumentToken="53430023"/>
+         <div  style={{ width: "50%", float: "left" }}>
+           <PivotPoints
+              instrument="SILVERMIC"
+              instrumentToken="53397511"/>
+          </div>
+          <div  style={{ width: "50%", float: "right" }}>
+            <PivotPoints
+              instrument="CRUDEOILM"
+              instrumentToken="53430023"/>
+          </div>
         </div>
         <div>
          <Board/>
