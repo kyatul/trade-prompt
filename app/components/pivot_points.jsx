@@ -24,7 +24,7 @@ export default class PivotPoints extends React.Component {
         <h4>R2 {this.state.R2}</h4>
         <h4>R1 {this.state.R1}</h4>
         <h4>PP {this.state.PP}</h4>
-        <h4>S1{this.state.S1}</h4>
+        <h4>S1 {this.state.S1}</h4>
         <h4>S2 {this.state.S2}</h4>
       </span>
     );

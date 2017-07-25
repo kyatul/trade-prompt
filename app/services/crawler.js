@@ -24,7 +24,7 @@ export default class Crawler {
   start(){
     this.calculator.calculate().then((pivots) => {
       this.pivots = pivots;  
-      setInterval(() => { if(this.doCrawl) this.crawl() }, this.interval * 60 * 100); 
+      setInterval(() => { if(this.doCrawl) this.crawl() }, this.interval * 60 * 1000); 
     }) 
   }
 

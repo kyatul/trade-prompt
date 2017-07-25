@@ -26,7 +26,7 @@ export default class Topic extends React.Component {
       <div>
         <h3>Topic</h3>
         <h4>{this.props.instrument}</h4>
-        {this.state.messages.map((msg) => <h5>{msg}</h5>)}
+        {this.state.messages.map((msg, index) => <h5 key={index}>{msg}</h5>)}
       </div>
     );
   }

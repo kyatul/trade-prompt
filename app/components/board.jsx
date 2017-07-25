@@ -8,19 +8,19 @@ export default class Board extends React.Component {
         <Topic
           instrument="SILVER"
           instrumentToken="53359111"
-          interval="3"
-          volumeThreshold="100"
+          interval="5"
+          volumeThreshold="500"
           longCandleLength="40"/>
         <Topic
           instrument="CRUDEOIL"
           instrumentToken="53429767"
-          interval="3"
-          volumeThreshold="100"
+          interval="5"
+          volumeThreshold="2800"
           longCandleLength="6"/>
         <Topic
           instrument="NATURALGAS"
           instrumentToken="53473031"
-          interval="3"
+          interval="5"
           volumeThreshold="30"
           longCandleLength="0.5"/>
       </div>
